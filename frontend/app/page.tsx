@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { CopilotChat, useCopilotChatSuggestions } from "@copilotkit/react-ui"
 import "@copilotkit/react-ui/styles.css";
 import { TextMessage, Role } from "@copilotkit/runtime-client-gql";
@@ -36,12 +34,11 @@ import { AppTable } from "@/components/visulization/table"
 const quickActions = [
   { label: "Type of Transactions", icon: ChartPie, color: "text-blue-600", prompt: "Get me the number of transactions in each type of mcc and show it in pie chart" },
   { label: "Department and Food Industry", icon: ChartBar, color: "text-green-600", prompt: "Get me the money earned from department and food industry and show it in bar chart" },
-  { label: "Transactions on January", icon: Table, color: "text-purple-600", prompt: "Get me the transactions of a specific mcc for a given month and show it in table" },
+  { label: "Transactions on January", icon: Table, color: "text-purple-600", prompt: "Get me the transactions of Miscellaneous Food Stores from January and show it in table" },
   { label: "Grocery and Apparel", icon: ChartBar, color: "text-orange-600", prompt: "Get me the money earned from Grocery and Apparel industry and show it in bar chart" },
 ]
 
 export default function PostGenerator() {
-  const [isAgentActive, setIsAgentActive] = useState(false)
   const [dashboardData, setDashboardData] = useState<any>([])
   const { appendMessage } = useCopilotChat()
 
@@ -248,13 +245,6 @@ export default function PostGenerator() {
             initial: initialPrompt
           }}
             Input={({ onSend, inProgress }) => {
-              useEffect(() => {
-                if (inProgress) {
-                  setIsAgentActive(true)
-                } else {
-                  setIsAgentActive(false)
-                }
-              }, [inProgress])
               const [input, setInput] = useState("")
               return (<>
                 <div className="space-y-3">
@@ -311,10 +301,10 @@ export default function PostGenerator() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              {isAgentActive && <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-sm">
+              {/* {isAgentActive && <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-sm">
                 <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
                 Live Research
-              </Badge>}
+              </Badge>} */}
               {/* <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white" />
               </div> */}
