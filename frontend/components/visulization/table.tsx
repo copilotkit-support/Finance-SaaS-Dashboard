@@ -99,7 +99,7 @@ export function AppTable<TRow = Record<string, unknown>>(
     return (
         <div
             className={cn(
-                "rounded-2xl shadow-lg p-4 flex flex-col",
+                "rounded-2xl shadow-lg p-4 flex flex-col h-[260px]",
                 className
             )}
             style={containerStyle}

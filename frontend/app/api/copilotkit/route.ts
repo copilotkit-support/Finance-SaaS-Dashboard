@@ -13,6 +13,15 @@ const runtime = new CopilotRuntime({
   actions: ({ properties, url }) => {
     return [
       {
+        name : "get_all_mcc_categories",
+        description : "This will return all the mcc categories there is. If the user ask for a specific mcc category and if it is not in the list, you should pick the most similar mcc category from the list and use it in the next set of tools.",
+        handler : async () => {
+          console.log("utilizing get_all_mcc_categories")
+          return ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services", "Sales and Marketing Services"]
+
+        }
+      },
+      {
         name: "get_transactions_by_use_chip",
         description: "Get transactions by use_chip. This use_chip indicates the type of transaction. Swipe Transaction is a transaction that was made with a physical card, and Online Transaction is a transaction that was made online.",
         parameters: [
@@ -54,7 +63,7 @@ const runtime = new CopilotRuntime({
             name: "mcc",
             description: "The mcc of the transaction",
             type: "string",
-            enum: ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services"],
+            enum: ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services", "Sales and Marketing Services"],
             required: true
           }
         ],
@@ -79,7 +88,7 @@ const runtime = new CopilotRuntime({
             name: "mcc",
             description: "The mcc of the transaction",
             type: "string",
-            enum: ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services"],
+            enum: ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services", "Sales and Marketing Services"],
             required: true
           },
           {
@@ -112,6 +121,40 @@ const runtime = new CopilotRuntime({
           }))
         }
       },
+      {
+        name : "get_all_spending_by_all_mcc_for_a_given_month",
+        description : "Get all spending by all mcc for a given month",
+        parameters : [
+          {
+            name : "month",
+            description : "The month of the transaction",
+            enum : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            required : true
+          }
+        ],
+        handler : async ({ month }: { month: string }) => {
+          console.log(month, "month")
+          let mccCategory = ["Miscellaneous Food Stores","Department Stores","Money Transfer","Drinking Places (Alcoholic Beverages)","Book Stores","Tolls and Bridge Fees","Athletic Fields, Commercial Sports","Grocery Stores, Supermarkets","Taxicabs and Limousines","Service Stations","Automotive Service Shops","Wholesale Clubs","Package Stores, Beer, Wine, Liquor","Upholstery and Drapery Stores","Fast Food Restaurants","Discount Stores","Telecommunication Services","Utilities - Electric, Gas, Water, Sanitary","Eating Places and Restaurants","Betting (including Lottery Tickets, Casinos)","Recreational Sports, Clubs","Drug Stores and Pharmacies","Lodging - Hotels, Motels, Resorts","Books, Periodicals, Newspapers","Detective Agencies, Security Services","Family Clothing Stores","Computer Network Services","Theatrical Producers","Digital Goods - Media, Books, Apps","Cable, Satellite, and Other Pay Television Services","Beauty and Barber Shops","Sports Apparel, Riding Apparel Stores","Electronics Stores","Antique Shops","Artist Supply Stores, Craft Shops","Travel Agencies","Brick, Stone, and Related Materials","Cleaning and Maintenance Services","Medical Services"]
+          let data = transactionsData.filter(transaction => new Date(transaction.date).getMonth() + 1 == parseInt(month))
+          let result = []
+          for (const mcc of mccCategory) {
+            let mccData = data.filter(transaction => transaction.mcc == mcc)
+            let totalMoneyEarned = 0
+            for (const transaction of mccData) {
+              totalMoneyEarned += parseFloat(transaction.amount.replace("$", ""))
+            }
+            console.log(`Total money earned on ${mcc} is $${totalMoneyEarned.toFixed(2)}`)
+            result.push({
+              mcc : mcc,
+              totalMoneyEarned : totalMoneyEarned.toFixed(2)
+            })
+          }
+          result.sort((a, b) => parseFloat(b.totalMoneyEarned) - parseFloat(a.totalMoneyEarned))
+          return result.map((item: any) => (
+            `Total money earned on ${item.mcc} is $${item.totalMoneyEarned}`
+          ))
+        }
+      }
 
     ]
   },

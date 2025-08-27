@@ -9,7 +9,7 @@ interface BarChartData {
   value: number;
 }
 
-export function BarData({ args }: any) {
+export function BarData({ args, from }: any) {
   const [data, setData] = useState<BarChartData[]>([])
   const chartColors = [
     "hsl(12, 76%, 61%)",
@@ -27,24 +27,13 @@ export function BarData({ args }: any) {
     }
   }, [args?.items])
 
-
-  // function getUniqueReviewers(prArray: PRData[]): string[] {
-  //   const reviewerSet = new Set<string>();
-  //   for (const pr of prArray) {
-  //     if (pr.assignedReviewer) {
-  //       reviewerSet.add(pr.assignedReviewer.toLowerCase()); // normalize casing if needed
-  //     }
-  //   }
-  //   return Array.from(reviewerSet);
-  // }
-
   return (
     <>
       {/* Bar Chart Section */}
-      <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] max-w-[350px]">
+      <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] h-[260px]">
         <h2 className="text-xl font-semibold mb-2 text-gray-700 text-center">{args?.title_of_chart || "Data Distribution"} </h2>
         <div className="h-[180px] flex items-center justify-center">
-          <BarChart width={260} height={180} data={data}>
+          <BarChart width={(data?.length > 5 && from === "canvas") ? 720 : 260} height={180} data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#94a3b855" />
             <XAxis dataKey="name" stroke="#cbd5e1" className="text-black"
               tickFormatter={(value: string) => value[0]?.toUpperCase()} />

@@ -23,7 +23,7 @@ export function PieData({ args, title }: PieDataProps) {
     }, [args]);
 
     return (
-        <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] max-w-[350px]">
+        <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] max-w-[350px] h-[260px]">
             <h2 className="text-xl font-semibold mb-2 text-gray-700 text-center">
                 {title || "Data Distribution"}
             </h2>
@@ -50,7 +50,7 @@ export function PieData({ args, title }: PieDataProps) {
                     <Tooltip content={<CustomPieTooltip />} />
                 </PieChart>
             </div>
-            <div className="flex flex-col items-center mt-4">
+            <div className="flex flex-col items-center mt-1">
                 {chunkArray(chartData, 2)?.map((row, rowIdx) => (
                     <div
                         key={rowIdx}

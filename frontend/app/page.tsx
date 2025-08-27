@@ -38,7 +38,7 @@ const quickActions = [
   { label: "Grocery and Apparel", icon: ChartBar, color: "text-orange-600", prompt: "Get me the money earned from Grocery and Apparel industry and show it in bar chart" },
 ]
 
-export default function PostGenerator() {
+export default function DashboardGenerator() {
   const [dashboardData, setDashboardData] = useState<any>([])
   const { appendMessage } = useCopilotChat()
 
@@ -140,7 +140,7 @@ export default function PostGenerator() {
       }
     ],
     render: ({ args }: any) => {
-      return <BarData args={args} />
+      return <BarData args={args} from="action" />
     },
     handler: async ({ items, title_of_chart }: any) => {
       setDashboardData((prev: any[]) => [
@@ -348,30 +348,44 @@ export default function PostGenerator() {
             </div>
           ) : (
             <div
-              className="grid gap-0"
-              style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
+              className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 grid-flow-row-dense"
             >
               {dashboardData.map((widget: any, index: number) => {
                 if (widget?.type === "pie_chart") {
                   return (
-                    <PieData
-                      key={index}
-                      args={widget.items}
-                      title={widget.title_of_chart}
-                    />
+                    <div key={index} className="col-span-1">
+                      <PieData
+                        args={widget.items}
+                        title={widget.title_of_chart}
+                      />
+                    </div>
                   )
                 }
                 if (widget?.type === "bar_chart") {
+                  const isWide = (widget?.items?.length || 0) > 5
+                  console.log(widget?.items?.length, "isWide")
                   return (
-                    <BarData
+                    <div
                       key={index}
-                      args={widget}
-                    />
+                      className={`${isWide ? "col-span-2 sm:col-span-2 xl:col-span-2" : "col-span-1"}`}
+                    >
+                      <BarData args={widget} from="canvas" />
+                    </div>
                   )
                 }
                 if (widget?.type === "table") {
                   return (
-                    <AppTable data={widget.data} columns={widget.columns.map((column: string) => ({ key: column }))} title={widget.title_of_chart} />
+                    <div key={index} className="col-span-1 sm:col-span-2 xl:col-span-2">
+                      <AppTable
+                        data={widget.data}
+                        columns={widget.columns.map((column: string) => ({ key: column }))}
+                        title={widget.title_of_chart}
+                        width="100%"
+                        minWidth={0}
+                        maxWidth="none"
+                        className="w-full"
+                      />
+                    </div>
                   )
                 }
                 return <div key={index} className="text-sm text-gray-600">Unsupported widget type</div>

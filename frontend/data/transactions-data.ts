@@ -4910,7 +4910,7 @@ export const transactionsData = [
         "merchant_city": "ONLINE",
         "merchant_state": "",
         "zip": "",
-        "mcc": "Tolls and Bridge Fees",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -4952,7 +4952,7 @@ export const transactionsData = [
         "merchant_city": "ONLINE",
         "merchant_state": "",
         "zip": "",
-        "mcc": "Telecommunication Services",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5022,7 +5022,7 @@ export const transactionsData = [
         "merchant_city": "Urbandale",
         "merchant_state": "IA",
         "zip": "50322.0",
-        "mcc": "Service Stations",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5036,7 +5036,7 @@ export const transactionsData = [
         "merchant_city": "Summerville",
         "merchant_state": "GA",
         "zip": "30747.0",
-        "mcc": "Package Stores, Beer, Wine, Liquor",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5106,7 +5106,7 @@ export const transactionsData = [
         "merchant_city": "Lucedale",
         "merchant_state": "MS",
         "zip": "39452.0",
-        "mcc": "Money Transfer",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5134,7 +5134,7 @@ export const transactionsData = [
         "merchant_city": "Spring Valley",
         "merchant_state": "CA",
         "zip": "91977.0",
-        "mcc": "Book Stores",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5176,7 +5176,7 @@ export const transactionsData = [
         "merchant_city": "Merritt Island",
         "merchant_state": "FL",
         "zip": "32953.0",
-        "mcc": "Grocery Stores, Supermarkets",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5232,7 +5232,7 @@ export const transactionsData = [
         "merchant_city": "San Francisco",
         "merchant_state": "CA",
         "zip": "94131.0",
-        "mcc": "Service Stations",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5246,7 +5246,7 @@ export const transactionsData = [
         "merchant_city": "Newark",
         "merchant_state": "DE",
         "zip": "19711.0",
-        "mcc": "Eating Places and Restaurants",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5442,7 +5442,7 @@ export const transactionsData = [
         "merchant_city": "ONLINE",
         "merchant_state": "",
         "zip": "",
-        "mcc": "Taxicabs and Limousines",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5456,7 +5456,7 @@ export const transactionsData = [
         "merchant_city": "Brooklyn",
         "merchant_state": "NY",
         "zip": "11210.0",
-        "mcc": "Drug Stores and Pharmacies",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5596,7 +5596,7 @@ export const transactionsData = [
         "merchant_city": "Franklin",
         "merchant_state": "MA",
         "zip": "2038.0",
-        "mcc": "Service Stations",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5694,7 +5694,7 @@ export const transactionsData = [
         "merchant_city": "Pacoima",
         "merchant_state": "CA",
         "zip": "91331.0",
-        "mcc": "Medical Services",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
@@ -5750,7 +5750,7 @@ export const transactionsData = [
         "merchant_city": "ONLINE",
         "merchant_state": "",
         "zip": "",
-        "mcc": "Telecommunication Services",
+        "mcc": "Sales and Marketing Services",
         "errors": ""
     },
     {
