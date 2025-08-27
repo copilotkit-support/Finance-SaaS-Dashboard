@@ -19,8 +19,8 @@ interface LayoutContextType {
 }
 
 const defaultLayoutState: LayoutState = {
-  title: "DeepMind × Gemini",
-  description: "Powered by Google's most advanced AI models for generating LinkedIn and X posts",
+  title: "CopilotKit Finance Dashboard",
+  description: "Powered by CopilotKit",
   showHeader: true,
   theme: 'light',
   agent: "post_generation_agent"
@@ -31,7 +31,7 @@ const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
 export function LayoutProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   // console.log(pathname)
-  const [layoutState, setLayoutState] = useState<LayoutState>({...defaultLayoutState, agent: (pathname == '/post-generator' ? "post_generation_agent" : "stack_analysis_agent")})
+  const [layoutState, setLayoutState] = useState<LayoutState>({ ...defaultLayoutState, agent: (pathname == '/post-generator' ? "post_generation_agent" : "stack_analysis_agent") })
   // console.log(layoutState)
   const updateLayout = (updates: Partial<LayoutState>) => {
     setLayoutState(prev => ({ ...prev, ...updates }))
