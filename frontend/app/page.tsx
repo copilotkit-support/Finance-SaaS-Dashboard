@@ -35,7 +35,7 @@ const quickActions = [
   { label: "Type of Transactions", icon: ChartPie, color: "text-blue-600", prompt: "Get me the number of transactions in each type of mcc and show it in pie chart" },
   { label: "Department and Food Industry", icon: ChartBar, color: "text-green-600", prompt: "Get me the money earned from department and food industry and show it in bar chart" },
   { label: "Transactions on January", icon: Table, color: "text-purple-600", prompt: "Get me the transactions of Miscellaneous Food Stores from January and show it in table" },
-  { label: "Grocery and Apparel", icon: ChartBar, color: "text-orange-600", prompt: "Get me the money earned from Grocery and Apparel industry and show it in bar chart" },
+  { label: "All Spendings of mcc", icon: ChartBar, color: "text-orange-600", prompt: "Get me all spendings from all mcc in January and show it in a bar chart" },
 ]
 
 export default function DashboardGenerator() {
