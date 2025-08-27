@@ -94,14 +94,22 @@ const runtime = new CopilotRuntime({
           console.log(mcc, "mcc")
           console.log(month, "month")
           console.log(`There is ${transactionsData.filter(transaction => transaction.mcc.toLowerCase() == mcc.toLowerCase() && new Date(transaction.date).getMonth() + 1 == parseInt(month)).length} ${mcc} transactions in ${month}`)
-          return `These are the transactions of ${mcc} in ${month}: ${transactionsData.filter(transaction => transaction.mcc.toLowerCase() == mcc.toLowerCase() && new Date(transaction.date).getMonth() + 1 == parseInt(month)).map((transaction: any) => ({
-            date: transaction.date,
+          // return `These are the transactions of ${mcc} in ${month}: ${transactionsData.filter(transaction => transaction.mcc.toLowerCase() == mcc.toLowerCase() && new Date(transaction.date).getMonth() + 1 == parseInt(month)).map((transaction: any) => ({
+          //   date: new Date(transaction.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          //   amount: transaction.amount,
+          //   merchant_city: transaction.merchant_city,
+          //   id: transaction.id,
+          //   client_id: transaction.client_id,
+          //   mcc: transaction.mcc,
+          // }))}`;
+          return transactionsData.filter(transaction => transaction.mcc.toLowerCase() == mcc.toLowerCase() && new Date(transaction.date).getMonth() + 1 == parseInt(month)).map((transaction: any) => ({
+            date: new Date(transaction.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
             amount: transaction.amount,
             merchant_city: transaction.merchant_city,
             id: transaction.id,
             client_id: transaction.client_id,
             mcc: transaction.mcc,
-          }))}`;
+          }))
         }
       },
 
