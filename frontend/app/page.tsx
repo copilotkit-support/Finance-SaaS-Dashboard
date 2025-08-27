@@ -26,11 +26,14 @@ import { useCoAgent, useCoAgentStateRender, useCopilotAction, useCopilotChat } f
 import { ToolLogs } from "@/components/ui/tool-logs"
 import { XPost, XPostPreview, XPostCompact } from "@/components/ui/x-post"
 import { Button } from "@/components/ui/button"
-import { initialPrompt, suggestionPrompt } from "./prompts/prompts"
+import { initialPrompt, instructions, suggestionPrompt } from "./prompts/prompts"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useLayout } from "./contexts/LayoutContext"
+import { PieData } from "@/components/visulization/pie-chart"
+import { BarData } from "@/components/visulization/bar-chart"
+import { AppTable } from "@/components/visulization/table"
 
 const quickActions = [
   { label: "Recent Research", icon: Search, color: "text-blue-600", prompt: "Generate a post about recent research on String Theory" },
@@ -41,9 +44,170 @@ const quickActions = [
 
 export default function PostGenerator() {
   const [isAgentActive, setIsAgentActive] = useState(false)
-  
-  const { appendMessage, setMessages } = useCopilotChat() 
+  const [dashboardData, setDashboardData] = useState<any>([])
+  const { appendMessage, setMessages } = useCopilotChat()
 
+
+  useCopilotAction({
+    name: "render_pie_chart",
+    description: "You need to render a pie chart with the data provided. The data provided will be generic. EXAMPLE FORMAT: {items : [{name: 'Online Transaction', shortName: 'online', value: 10, color: 'red'}, {name: 'Offline Transaction', shortName: 'offline', value: 20, color: 'blue'}], title : 'Transaction Distribution'}",
+    parameters: [
+      {
+        name: "items",
+        type: "object[]",
+        description: "Array of items to be displayed in the pie chart",
+        required: true,
+        attributes: [
+          {
+            name: "name",
+            type: "string",
+            description: "Name of the item",
+            required: true
+          },
+          {
+            name: "shortName",
+            type: "string",
+            description: "Short Name of the item",
+            required: true
+          },
+          {
+            name: "value",
+            type: "number",
+            description: "Value of the item",
+            required: true
+          },
+          {
+            name: "color",
+            type: "string",
+            description: "Color of the item",
+            required: true
+          }
+        ]
+      },
+      {
+        name: "title_of_chart",
+        type: "string",
+        description: "Title of the chart",
+        required: true
+      }
+    ],
+    render: ({ args }: any) => {
+      useEffect(() => {
+        console.log(args, "argsfromcpa")
+      }, [args])
+      return <PieData args={args.items} title={args.title_of_chart} />
+    },
+    handler: async ({ items, title_of_chart }: any) => {
+      // Append new widget to dashboard sequentially
+      setDashboardData((prev: any[]) => [
+        ...prev,
+        { items, title_of_chart, type: "pie_chart" },
+      ])
+      return { items, title_of_chart }
+    }
+  })
+
+  useCopilotAction({
+    name: "render_bar_chart",
+    description: `You need to render a bar chart with the data provided. The data provided will be generic. EXAMPLE FORMAT: {items : [{"name": "Miscellaneous Food Stores", "value": 86000, "color": "rgb(134 239 172)"}, {"name": "Department Stores", "value": 15, "color": "rgb(216 180 254)"}, {"name": "Miscellaneous Food Stores", "value": 10, "color": "rgb(253 224 71)"}, {"name": "Wholesale Clubs", "value": 5, "color": "rgb(147 197 253)"}], title : 'Transaction Distribution'}`,
+    parameters: [
+      {
+        name: "items",
+        type: "object[]",
+        description: "Array of items to be displayed in the bar chart",
+        required: true,
+        attributes: [
+          {
+            name: "name",
+            type: "string",
+            description: "Name of the entity",
+            required: true
+          },
+          {
+            name: "value",
+            type: "number",
+            description: "Value of the entity",
+            required: true
+          },
+          {
+            name: "color",
+            type: "string",
+            description: "Color of the entity",
+            required: true
+          }
+        ]
+      },
+      {
+        name: "title_of_chart",
+        type: "string",
+        description: "Title of the chart. It should be a short title",
+        required: true
+      }
+    ],
+    render: ({ args }: any) => {
+      return <BarData args={args} />
+    },
+    handler: async ({ items, title_of_chart }: any) => {
+      setDashboardData((prev: any[]) => [
+        ...prev,
+        { items, title_of_chart, type: "bar_chart" },
+      ])
+      return { items, title_of_chart }
+    }
+  })
+
+  useCopilotAction({
+    name: "render_table",
+    description: `You need to render a Table with the data provided. The data provided will be generic. EXAMPLE FORMAT: {columns: ['title', 'amount'], data: [{key: 'title', value: 'John'}, {key: 'value', value: '10'}]}`,
+    parameters: [
+      {
+        name: "columns",
+        type: "string[]",
+        description: "The name of the columns that need to be displayed in the table",
+        required: true,
+      },
+      {
+        name: "data",
+        type: "object[]",
+        description: "The data that needs to be displayed in the table",
+        required: true,
+        attributes: [
+          {
+            name: "rows",
+            type: "object[]",
+            required: true,
+            attributes: [
+              {
+                name: "cells",
+                type: "string[]",
+                required: true,
+                description: "One row as an array of strings. Make sure the number of cells is equal to the number of columns, if some data is missing, use empty string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "title_of_chart",
+        type: "string",
+        description: "Title of the chart. It should be a short title",
+        required: true
+      }
+    ],
+    render: ({ args }: any) => {
+      useEffect(() => {
+        console.log(args, "argsfromtable")
+      }, [args])
+      return <AppTable title={args?.title_of_chart} data={args?.data} columns={args?.columns?.map((column: string) => ({ key: column }))} />
+    },
+    handler: async ({ columns, data, title_of_chart }: any) => {  
+      setDashboardData((prev: any[]) => [
+        ...prev,
+        { columns, data, title_of_chart, type: "table" },
+      ])
+      return { columns, data, title_of_chart }
+    }
+  })
 
 
   useCopilotChatSuggestions({
@@ -82,7 +246,7 @@ export default function PostGenerator() {
         <div className="flex-1 overflow-auto">
 
           {/* Chat Input at Bottom */}
-          <CopilotChat className="h-full p-2" labels={{
+          <CopilotChat className="h-full p-2" instructions={instructions} labels={{
             initial: initialPrompt
           }}
             Input={({ onSend, inProgress }) => {
@@ -143,7 +307,7 @@ export default function PostGenerator() {
               </div>
               <div>
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-                  Finance Dashboards
+                  Finance Dashboard
                 </h2>
                 <p className="text-sm text-gray-600">Powered by CopilotKit</p>
               </div>
@@ -162,40 +326,70 @@ export default function PostGenerator() {
 
         {/* Main Canvas */}
         <div className="flex-1 p-6 overflow-y-auto">
-
-          <div className="text-center py-16">
-            <div className="relative mb-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto shadow-2xl">
-                <Brain className="w-10 h-10 text-white" />
+          {dashboardData?.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto shadow-2xl">
+                  <Brain className="w-10 h-10 text-white" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3">
+                Ready to Explore
+              </h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+                Harness the power of CopilotKit for generating interactive Dashboard over your financial data.
+              </p>
+              <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
+                {quickActions.slice(0, 4).map((action, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="h-auto p-6 flex flex-col items-center gap-3 bg-white/50 backdrop-blur-sm border-gray-200/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 rounded-xl transition-all duration-300 group"
+                    onClick={() => appendMessage(new TextMessage({
+                      role: Role.User,
+                      content: action.prompt
+                    }))}
+                  >
+                    <action.icon
+                      className={`w-6 h-6 ${action.color} group-hover:scale-110 transition-transform duration-200`}
+                    />
+                    <span className="text-sm font-medium">{action.label}</span>
+                  </Button>
+                ))}
               </div>
             </div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3">
-              Ready to Explore
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
-              Harness the power of Google's most advanced AI models for generating interactive LinkedIn and X Posts.
-            </p>
-            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
-              {quickActions.slice(0, 4).map((action, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  // disabled={running}
-
-                  className="h-auto p-6 flex flex-col items-center gap-3 bg-white/50 backdrop-blur-sm border-gray-200/50 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 rounded-xl transition-all duration-300 group"
-                  onClick={() => appendMessage(new TextMessage({
-                    role: Role.User,
-                    content: action.prompt
-                  }))}
-                >
-                  <action.icon
-                    className={`w-6 h-6 ${action.color} group-hover:scale-110 transition-transform duration-200`}
-                  />
-                  <span className="text-sm font-medium">{action.label}</span>
-                </Button>
-              ))}
+          ) : (
+            <div
+              className="grid gap-0"
+              style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
+            >
+              {dashboardData.map((widget: any, index: number) => {
+                if (widget?.type === "pie_chart") {
+                  return (
+                    <PieData
+                      key={index}
+                      args={widget.items}
+                      title={widget.title_of_chart}
+                    />
+                  )
+                }
+                if (widget?.type === "bar_chart") {
+                  return (
+                    <BarData
+                      key={index}
+                      args={widget}
+                    />
+                  )
+                }
+                if (widget?.type === "table") {
+                  return (
+                    <AppTable data={widget.data} columns={widget.columns.map((column: string) => ({ key: column }))} title={widget.title_of_chart} />
+                  )
+                }
+                return <div key={index} className="text-sm text-gray-600">Unsupported widget type</div>
+              })}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div >
