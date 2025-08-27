@@ -13,6 +13,9 @@ import {
   Twitter,
   TrendingUp,
   Send,
+  ChartBar,
+  ChartPie,
+  Table,
   User,
   ExternalLink,
   Globe,
@@ -22,30 +25,25 @@ import {
   ChevronDown,
   Check,
 } from "lucide-react"
-import { useCoAgent, useCoAgentStateRender, useCopilotAction, useCopilotChat } from "@copilotkit/react-core"
-import { ToolLogs } from "@/components/ui/tool-logs"
-import { XPost, XPostPreview, XPostCompact } from "@/components/ui/x-post"
+import {useCopilotAction, useCopilotChat } from "@copilotkit/react-core"
 import { Button } from "@/components/ui/button"
 import { initialPrompt, instructions, suggestionPrompt } from "./prompts/prompts"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
-import { useRouter } from "next/navigation"
-import { useLayout } from "./contexts/LayoutContext"
 import { PieData } from "@/components/visulization/pie-chart"
 import { BarData } from "@/components/visulization/bar-chart"
 import { AppTable } from "@/components/visulization/table"
 
 const quickActions = [
-  { label: "Recent Research", icon: Search, color: "text-blue-600", prompt: "Generate a post about recent research on String Theory" },
-  { label: "Recent News", icon: FileText, color: "text-green-600", prompt: "Generate a post about recent news in United States" },
-  { label: "Post about Social Media", icon: Twitter, color: "text-purple-600", prompt: "Generate a post about Instagram" },
-  { label: "Post about Stocks", icon: TrendingUp, color: "text-orange-600", prompt: "Generate a post about Nvidia" },
+  { label: "Type of Transactions", icon: ChartPie, color: "text-blue-600", prompt: "Get me the number of transactions in each type of mcc and show it in pie chart" },
+  { label: "Department and Food Industry", icon: ChartBar, color: "text-green-600", prompt: "Get me the money earned from department and food industry and show it in bar chart" },
+  { label: "Transactions on January", icon: Table, color: "text-purple-600", prompt: "Get me the transactions of a specific mcc for a given month and show it in table" },
+  { label: "Grocery and Apparel", icon: ChartBar, color: "text-orange-600", prompt: "Get me the money earned from Grocery and Apparel industry and show it in bar chart" },
 ]
 
 export default function PostGenerator() {
   const [isAgentActive, setIsAgentActive] = useState(false)
   const [dashboardData, setDashboardData] = useState<any>([])
-  const { appendMessage, setMessages } = useCopilotChat()
+  const { appendMessage } = useCopilotChat()
 
 
   useCopilotAction({
