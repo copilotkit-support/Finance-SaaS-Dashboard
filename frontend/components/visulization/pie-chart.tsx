@@ -1,4 +1,5 @@
 import { Cell, Legend } from "recharts";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Pie, PieChart, Tooltip } from "recharts";
 
@@ -13,9 +14,11 @@ interface PieDataItem {
 interface PieDataProps {
   args: PieDataItem[]
   title: string
+  from?: string
+  onRemove?: () => void
 }
 
-export function PieData({ args, title }: PieDataProps) {
+export function PieData({ args, title, from, onRemove }: PieDataProps) {
   const [chartData, setChartData] = useState<PieDataItem[]>([]);
   useEffect(() => {
     console.log(JSON.stringify(args), "argsarhs");
@@ -23,7 +26,17 @@ export function PieData({ args, title }: PieDataProps) {
   }, [args]);
 
   return (
-    <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] max-w-[350px] h-[260px]">
+    <div className="relative flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] max-w-[350px] h-[260px]">
+      {from === "canvas" && (
+        <button
+          type="button"
+          onClick={onRemove}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+          aria-label="Remove"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      )}
       <h2 className="text-xl font-semibold mb-2 text-gray-700 text-center">
         {title || "Data Distribution"}
       </h2>

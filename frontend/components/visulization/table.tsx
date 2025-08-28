@@ -22,10 +22,12 @@ export type ColumnDef<TRow> = {
 }
 
 export type AppTableProps<TRow = Record<string, unknown>> = {
-    data: any[]
+    data: any
     columns: ColumnDef<TRow>[]
     caption?: React.ReactNode
     title?: React.ReactNode
+    from?: string
+    onRemove?: () => void
     className?: string
     /** Explicit component width (default 100%). */
     width?: number | string
@@ -61,6 +63,8 @@ export function AppTable<TRow = Record<string, unknown>>(
         columns,
         caption,
         title,
+        from,
+        onRemove,
         className,
         width = "100%",
         minWidth = 250,
@@ -99,11 +103,21 @@ export function AppTable<TRow = Record<string, unknown>>(
     return (
         <div
             className={cn(
-                "rounded-2xl shadow-lg p-4 flex flex-col h-[260px]",
+                "relative rounded-2xl shadow-lg p-4 flex flex-col h-[260px]",
                 className
             )}
             style={containerStyle}
         >
+            {from === "canvas" && (
+                <button
+                    type="button"
+                    onClick={onRemove}
+                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                    aria-label="Remove"
+                >
+                    ×
+                </button>
+            )}
             {title ? (
                 <div className="mb-2">
                     <div className="text-xl font-semibold text-gray-700 text-center">{title}</div>
@@ -111,7 +125,7 @@ export function AppTable<TRow = Record<string, unknown>>(
             ) : null}
             <div className="flex-1 overflow-auto">
             {
-                data?.length > 0 ? (<Table>
+                data?.rows ? (<Table>
                     {caption ? <TableCaption>{caption}</TableCaption> : null}
 
                     <TableHeader
@@ -134,7 +148,7 @@ export function AppTable<TRow = Record<string, unknown>>(
                     </TableHeader>
 
                     <TableBody>
-                        {data[0]?.rows?.map((row: any, rowIndex: any) => {
+                        {data?.rows?.map((row: any, rowIndex: any) => {
                             // const key = rowKey ? rowKey(row, rowIndex) : rowIndex
                             return (
                                 <TableRow

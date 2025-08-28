@@ -23,7 +23,7 @@ import {
   ChevronDown,
   Check,
 } from "lucide-react"
-import {useCopilotAction, useCopilotChat } from "@copilotkit/react-core"
+import { useCopilotAction, useCopilotChat } from "@copilotkit/react-core"
 import { Button } from "@/components/ui/button"
 import { initialPrompt, instructions, suggestionPrompt } from "./prompts/prompts"
 import { Textarea } from "@/components/ui/textarea"
@@ -153,7 +153,7 @@ export default function DashboardGenerator() {
 
   useCopilotAction({
     name: "render_table",
-    description: `You need to render a Table with the data provided. The data provided will be generic. EXAMPLE FORMAT: {columns: ['title', 'amount'], data: [{key: 'title', value: 'John'}, {key: 'value', value: '10'}]}`,
+    description: `You need to render a Table with the data provided. The data provided will be generic. EXAMPLE FORMAT: {columns: ['title', 'amount'], data: {rows: [{cells : ['Hotel', '100']},{cells : ['Airlines', '356']},{cells : ['Alcohol', '686']},]}}`,
     parameters: [
       {
         name: "columns",
@@ -163,7 +163,7 @@ export default function DashboardGenerator() {
       },
       {
         name: "data",
-        type: "object[]",
+        type: "object",
         description: "The data that needs to be displayed in the table",
         required: true,
         attributes: [
@@ -193,9 +193,10 @@ export default function DashboardGenerator() {
       useEffect(() => {
         console.log(args, "argsfromtable")
       }, [args])
+      // return <div>Hello</div>
       return <AppTable title={args?.title_of_chart} data={args?.data} columns={args?.columns?.map((column: string) => ({ key: column }))} />
     },
-    handler: async ({ columns, data, title_of_chart }: any) => {  
+    handler: async ({ columns, data, title_of_chart }: any) => {
       setDashboardData((prev: any[]) => [
         ...prev,
         { columns, data, title_of_chart, type: "table" },
@@ -357,6 +358,8 @@ export default function DashboardGenerator() {
                       <PieData
                         args={widget.items}
                         title={widget.title_of_chart}
+                        from="canvas"
+                        onRemove={() => setDashboardData((prev: any[]) => prev.filter((_, i) => i !== index))}
                       />
                     </div>
                   )
@@ -369,7 +372,7 @@ export default function DashboardGenerator() {
                       key={index}
                       className={`${isWide ? "col-span-2 sm:col-span-2 xl:col-span-2" : "col-span-1"}`}
                     >
-                      <BarData args={widget} from="canvas" />
+                      <BarData args={widget} from="canvas" onRemove={() => setDashboardData((prev: any[]) => prev.filter((_, i) => i !== index))} />
                     </div>
                   )
                 }
@@ -380,6 +383,8 @@ export default function DashboardGenerator() {
                         data={widget.data}
                         columns={widget.columns.map((column: string) => ({ key: column }))}
                         title={widget.title_of_chart}
+                        from="canvas"
+                        onRemove={() => setDashboardData((prev: any[]) => prev.filter((_, i) => i !== index))}
                         width="100%"
                         minWidth={0}
                         maxWidth="none"

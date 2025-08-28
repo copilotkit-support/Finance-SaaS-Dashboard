@@ -3,13 +3,14 @@ import { Legend } from "recharts"
 import { CartesianGrid, Tooltip, XAxis, YAxis } from "recharts"
 import { Bar } from "recharts"
 import { BarChart } from "recharts"
+import { X } from "lucide-react"
 
 interface BarChartData {
   name: string;
   value: number;
 }
 
-export function BarData({ args, from }: any) {
+export function BarData({ args, from, onRemove }: any) {
   const [data, setData] = useState<BarChartData[]>([])
   const chartColors = [
     "hsl(12, 76%, 61%)",
@@ -30,7 +31,17 @@ export function BarData({ args, from }: any) {
   return (
     <>
       {/* Bar Chart Section */}
-      <div className="flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] h-[260px]">
+      <div className="relative flex-1 p-4 rounded-2xl shadow-lg flex flex-col items-center min-w-[250px] h-[260px]">
+        {from === "canvas" && (
+          <button
+            type="button"
+            onClick={onRemove}
+            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+            aria-label="Remove"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
         <h2 className="text-xl font-semibold mb-2 text-gray-700 text-center">{args?.title_of_chart || "Data Distribution"} </h2>
         <div className="h-[180px] flex items-center justify-center">
           <BarChart width={(data?.length > 5 && from === "canvas") ? 720 : 260} height={180} data={data}>
