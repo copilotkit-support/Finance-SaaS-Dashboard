@@ -1,6 +1,7 @@
 # CopilotKit-Finance-Dashboard
 
 A demo project with a Next.js frontend for Dynamic Financial Dashboard using CopilotKit.
+![Demo](assets/example.gif)
 
 ---
 
